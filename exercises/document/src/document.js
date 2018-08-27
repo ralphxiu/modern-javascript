@@ -9,6 +9,22 @@ Doc.prototype = {
   _loadDocument(docVersion, data) {
     // TODO: Update document based on version
     this._data = data;
+    let nameParts;
+    switch (docVersion) {
+      case 1:
+        nameParts = data.name.split(/\s+/);
+        data.firstName = nameParts[0];
+        data.lastName = nameParts[nameParts.length - 1];
+      case 2:
+        data.email = 'nobody@example.com';
+      case 3:
+        nameParts = data.name.split(/\s+/);
+        let middleName = nameParts.length > 2
+          ? nameParts.slice(1, nameParts.length - 1).join(' ')
+          : '';
+        data.middleName = middleName;
+      default:
+    }
   },
   get data() {
     return { ...this._data };
@@ -16,6 +32,11 @@ Doc.prototype = {
 };
 
 Doc.fromFile = function fromFile(filename) {
-  let doc = require(`../docs/${filename}`);
+  let doc;
+  try {
+    doc = require(`../docs/${filename}`);
+  } catch (error) {
+    throw error;
+  }
   return new Doc(doc);
 };

@@ -48,6 +48,22 @@ export function filter(array, func) {
   return rlt;
 }
 
+
+/**
+ * use reduce to build filter
+ * @param {array} array original array
+ * @param {function} func filtering function
+ * @return {array} filtered array
+ */
+function filter2(array, func) {
+  return reduce(array, (filteredArr, item) => {
+    if (func(item)) {
+      filteredArr.push(item);
+    }
+    return filteredArr;
+  }, []);
+}
+
 /**
  * Generate a singular value by iterating over an array.
  * More info: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
@@ -65,3 +81,12 @@ export function reduce(array, reducer, initialVal) {
   }
   return acc;
 }
+
+// power of reduce example
+// let square = x => x * x;
+// let addFour = x => x + 4;
+// let half = x => x / 2;
+
+// [square, addFour, half].reduce((val, fn) => {
+//   return fn(val);
+// }, 16);
